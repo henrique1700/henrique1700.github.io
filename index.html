@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>jogo</title>
+    <meta charset="UTF-8">
+    <!-- Início do Script do Canvas -->        
+    <!--
+Programa: DIGITE AQUI O NOME DO PROGRAMA
+Nome: HENRIQUE PERES CILIA GONCALVES - Nº:13 - Turma:2ºL
+DESCRIÇÃO: um jogo de uma bola azul.
+-->
+    <script>
+        var x = 60;  // Posição x inicial
+        var y = 65;  // Posição y inicial
+        var radius = 50;  // Raio do círculo
+        var intervalId; // Para armazenar o ID do intervalo
+
+        function draw() {
+            var canvas = document.getElementById('meuCanvas');
+            if (canvas.getContext) {
+                var cntxt = canvas.getContext('2d');
+                
+                cntxt.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
+                cntxt.beginPath();
+                cntxt.fillStyle = "DodgerBlue";
+                cntxt.arc(x, y, radius, 0, Math.PI * 2, true);
+                cntxt.fill();
+                cntxt.closePath();
+            }
+        }
+
+        function move(direction) {
+            switch (direction) {
+                case 'right':
+                    x += 10;  // Move o círculo para a direita
+                    break;
+                case 'left':
+                    x -= 10;  // Move o círculo para a esquerda
+                    break;
+                case 'up':
+                    y -= 10;  // Move o círculo para cima
+                    break;
+                case 'down':
+                    y += 10;  // Move o círculo para baixo
+                    break;
+            }
+            draw();
+        }
+
+        function startMoving(direction) {
+            if (!intervalId) {
+                intervalId = setInterval(function() {
+                    move(direction);
+                }, 100); // Move a cada 100ms
+            }
+        }
+
+        function stopMoving() {
+            clearInterval(intervalId);
+            intervalId = null;
+        }
+
+        window.onload = function() {
+            draw();  // Desenha o círculo quando a página é carregada
+
+            document.getElementById("rightbutton").addEventListener('mousedown', function() { startMoving('right'); });
+            document.getElementById("leftbutton").addEventListener('mousedown', function() { startMoving('left'); });
+            document.getElementById("upbutton").addEventListener('mousedown', function() { startMoving('up'); });
+            document.getElementById("downbutton").addEventListener('mousedown', function() { startMoving('down'); });
+
+            document.getElementById("rightbutton").addEventListener('mouseup', stopMoving);
+            document.getElementById("leftbutton").addEventListener('mouseup', stopMoving);
+            document.getElementById("upbutton").addEventListener('mouseup', stopMoving);
+            document.getElementById("downbutton").addEventListener('mouseup', stopMoving);
+
+            // Para garantir que o movimento pare se o botão for liberado fora do botão
+            document.addEventListener('mouseup', stopMoving);
+        };
+    </script>        
+</head>
+<body>
+    <h1>Henrique Peres N-13 2-l</h1>
+    <div>
+        <canvas id="meuCanvas" width="500" height="500" style="border:1px solid #000000; background-color: white;"></canvas>
+    </div>
+    <div>
+        <input type="button" value="UP" id="upbutton">
+        <input type="button" value="LEFT" id="leftbutton">
+        <input type="button" value="DOWN" id="downbutton">
+        <input type="button" value="RIGHT" id="rightbutton">
+    </div>
+</body>
+</html>
+
